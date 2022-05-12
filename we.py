@@ -7,7 +7,7 @@ import pymorphy2
 from dictionaries import currency, crypto, periods
 
 morph = pymorphy2.MorphAnalyzer(lang='ru')
-TOKEN = '5284374471:AAExiDe1N_LSX7SFc-rvD8PnTFIObVToLX0'
+
 
 
 def start(update, context):
@@ -117,4 +117,3 @@ def currency_exchange(update, context):
 
 if __name__ == '__main__':
     main()
-
