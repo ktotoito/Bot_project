@@ -2,11 +2,12 @@ from requests import request
 import json
 from telegram.ext import Updater, MessageHandler, Filters, ConversationHandler
 from telegram.ext import CallbackContext, CommandHandler
-from telegram_config import TOKEN
+# from telegram_config import TOKEN
 import pymorphy2
 from dictionaries import currency, crypto, periods
 
 morph = pymorphy2.MorphAnalyzer(lang='ru')
+TOKEN = '5284374471:AAExiDe1N_LSX7SFc-rvD8PnTFIObVToLX0'
 
 
 def start(update, context):
@@ -34,65 +35,18 @@ def main():
     )
     dp.add_handler(conv_handler)
 
-    # text_handler1 = MessageHandler(Filters.text, exchange_rate1)
-    # text_handler = MessageHandler(Filters.text, exchange_rate)
-    # text_handler1 = MessageHandler(Filters.text, currency)
-    # dp.add_handler(text_handler)
-    # dp.add_handler(text_handler)
-    # dp.add_handler(text_handler1)
     updater.start_polling()
 
     updater.idle()
 
 
-# def exchange_rate1(update, context):
-#     a = update.message.text.lower()
-#     if 'курс' in a and ('биткоин' in a or 'битк' in a):
-#         url = 'https://api.huobi.pro/market/trade?symbol=btcusdt'
-#         response = request('GET', url)
-#         r = json.loads(response.text)
-#         update.message.reply_text(f'Биток: {r["tick"]["data"][0]["price"]}$')
-#
-#     if 'курс' in a and (' эфириум' in a or ' эфирчик' in a or ' эфир' in a):
-#         url = 'https://api.huobi.pro/market/trade?symbol=ethusdt'
-#         response = request('GET', url)
-#         r = json.loads(response.text)
-#         update.message.reply_text(f'Эфирчик: {r["tick"]["data"][0]["price"]}$')
-
-
-# def exchange_rate(update, context):
-#     if 'курс' in update.message.text and ('крипт' in update.message.text):
-#         url = 'https://api.huobi.pro/market/trade?symbol=btcusdt'
-#         response = request('GET', url)
-#         bitcoin = json.loads(response.text)
-#
-#         url1 = 'https://api.huobi.pro/market/trade?symbol=ethusdt'
-#         response = request('GET', url1)
-#         ethereum = json.loads(response.text)
-#         # url2 = 'https://api.huobi.pro/market/detail?symbol=ethusdt'
-#         # response = request('GET', url2)
-#         # ethereum1 = json.loads(response.text)
-#         # f1 = round(ethereum["tick"]["data"][0]["price"] / ethereum1["tick"]["open"] * 100, 2)
-#         # g = ''
-#         # if f1 > 100:
-#         #     g = 'рост на'
-#         # elif f1 < 100:
-#         #     g = 'снижение на'
-#         # f = abs(f1 - 100)
-#
-#         update.message.reply_text(f'Курс Биткоина: {bitcoin["tick"]["data"][0]["price"]}$\n'
-#                                   f'Курс Эфириума: {ethereum["tick"]["data"][0]["price"]}$')
-#     else:
-#         pass
-
-
 def currency_exchange(update, context):
-    if 'курс' in update.message.text:
+    if 'курс' in update.message.text.lower():
 
-        m = update.message.text.lower().split()
+        m = update.message.text.split()
         k = set()
         for i in range(len(m)):
-            if 'драм' not in m[i] or 'лайткоин' not in m[i] or 'рипл' not in m[i]\
+            if 'драм' not in m[i] or 'лайткоин' not in m[i] or 'рипл' not in m[i] \
                     or 'биткойн' not in m[i] or 'биткоин' not in m[i]:
                 k.add(morph.parse(m[i])[0].normal_form)
             if 'драм' in m[i]:
@@ -112,13 +66,10 @@ def currency_exchange(update, context):
 
             for i in list(currency.keys()):
                 i1 = set(i.split())
-                if k & i1 == i1 and 'фунт' not in k:
-                    update.message.reply_text(f'Курс: {n["Valute"][currency[i]]["Value"]}')
-                if 'фунт' in k:
+                if k & i1 == i1:
                     update.message.reply_text(f'Курс: {n["Valute"][currency[i]]["Value"]}')
 
         if set(crypto.keys()) & k or ('bitcoin' and 'cash') in k or ('биткойн' and 'кэш') in k:
-            print('yes')
             for i in list(crypto.keys()):
                 i1 = set(i.split())
                 if k & i1 == i1:
@@ -158,7 +109,7 @@ def currency_exchange(update, context):
 
         k = set()
         for i in range(len(m)):
-            if 'лайткоин' not in m[i] or 'рипл' not in m[i]\
+            if 'лайткоин' not in m[i] or 'рипл' not in m[i] \
                     or 'биткойн' not in m[i] or 'биткоин' not in m[i]:
                 k.add(morph.parse(m[i])[0].normal_form)
             if 'лайткоин' in m[i]:
