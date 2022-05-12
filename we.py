@@ -43,7 +43,7 @@ def main():
 def currency_exchange(update, context):
     if 'курс' in update.message.text.lower():
 
-        m = update.message.text.split()
+        m = update.message.text.lower().split()
         k = set()
         for i in range(len(m)):
             if 'драм' not in m[i] or 'лайткоин' not in m[i] or 'рипл' not in m[i] \
@@ -79,24 +79,7 @@ def currency_exchange(update, context):
 
                     update.message.reply_text(f'Курс: {bitcoin["tick"]["data"][0]["price"]}$')
 
-            # url1 = 'https://api.huobi.pro/market/trade?symbol=ethusdt'
-            # response = request('GET', url1)
-            # ethereum = json.loads(response.text)
-            # # url2 = 'https://api.huobi.pro/market/detail?symbol=ethusdt'
-            # # response = request('GET', url2)
-            # # ethereum1 = json.loads(response.text)
-            # # f1 = round(ethereum["tick"]["data"][0]["price"] / ethereum1["tick"]["open"] * 100, 2)
-            # # g = ''
-            # # if f1 > 100:
-            # #     g = 'рост на'
-            # # elif f1 < 100:
-            # #     g = 'снижение на'
-            # # f = abs(f1 - 100)
-            #
-            # update.message.reply_text(f'Курс Биткоина: {bitcoin["tick"]["data"][0]["price"]}$\n'
-            #                           f'Курс Эфириума: {ethereum["tick"]["data"][0]["price"]}$')
-
-    if 'статистик' in update.message.text or 'динамик' in update.message.text:
+    if 'статистик' in update.message.text.lower() or 'динамик' in update.message.text.lower():
         period = '1day'
         period_human = 'последний день'
         m = update.message.text.lower().split()
@@ -135,11 +118,3 @@ def currency_exchange(update, context):
 if __name__ == '__main__':
     main()
 
-# url = 'https://api.huobi.pro/market/trade?symbol=ethusdt'
-# response = request('GET', url)
-# r = json.loads(response.text)
-# url1 = 'https://api.huobi.pro/market/trade?symbol=btcusdt'
-# response1 = request('GET', url1)
-# m = json.loads(response1.text)
-# print("Эфирчик:", r["tick"]['data'][0]['price'])
-# print("Биток:", m["tick"]['data'][0]['price'])
